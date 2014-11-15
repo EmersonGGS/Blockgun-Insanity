@@ -14,13 +14,96 @@ var rects = [
   rect(1097, 0, 3, 800),
 
   	//Map platforms
-  rect(0, 740, 50, 10),
-  rect(100, 120, 20, 20),
-  rect(120, 140, 20, 20),
-  rect(140, 160, 20, 20),
-  rect(160, 180, 20, 20),
-  rect(180, 200, 20, 20),
-  rect(200, 220, 100, 20)
+
+    //Death Chamber
+  rect(0, 450, 50, 10),
+  rect(100, 450, 120, 10),
+  rect(220, 450, 10, 210),
+  rect(40, 540, 180, 6),
+  rect(0, 600, 180, 6),
+  rect(190, 660, 20, 20),
+  rect(165, 680, 20, 20),
+  rect(140, 700, 20, 20),
+  rect(115, 720, 20, 20),
+  rect(70, 760, 20, 20),
+  rect(45, 740, 20, 20 ),
+  rect(22, 720, 20, 20),
+  rect(0, 700, 20, 20),
+
+
+    ////////////////////
+    //Hallway of Doom//
+    //////////////////
+
+  rect(220, 650, 800, 10),
+  rect(260, 650, 30, 70),
+  rect(360, 720, 30, 70),
+  rect(460, 650, 30, 70),
+  rect(560, 720, 30, 70),
+  rect(660, 650, 30, 70),
+  rect(760, 720, 30, 70),
+  rect(860, 650, 30, 70),
+  rect(960, 720, 30, 70),
+  rect(1050, 720, 80, 10),
+
+
+    ///////////////////////
+    //Stairway to Heaven//
+    /////////////////////
+
+  rect(1050, 600, 80, 6),
+  rect(920, 550, 80, 6),
+  rect(1050, 500, 80, 6),
+  rect(920, 450, 80, 6),
+  rect(1050, 400, 80, 6),
+  rect(920, 350, 80, 6),
+  rect(1050, 300, 80, 6),
+  rect(920, 250, 80, 6),
+  rect(1050, 200, 80, 6),
+  rect(990, 150, 50, 6),
+
+
+    //////////////////
+    //The Drop Zone//
+    ////////////////
+
+  rect(60, 130, 200, 6),
+  rect(310, 100, 200, 6),
+  rect(550, 130, 200, 6),
+  rect(800, 100, 200, 6),
+
+
+    ////////////////////
+    //Pin-ball Poluza//
+    //////////////////
+
+    rect(300, 405, 30, 30),
+    rect(400, 430, 30, 30),
+    rect(500, 450, 30, 30),
+    rect(600, 460, 30, 30),
+    rect(700, 480, 30, 30),
+    rect(800, 500, 30, 30),
+
+    rect(300, 580, 30, 30),
+    rect(400, 600, 30, 30),
+    rect(500, 530, 30, 30),
+    rect(600, 505, 30, 30),
+    rect(700, 560, 30, 30),
+    rect(800, 550, 30, 30),
+
+    rect(300, 400, 30, 30),
+    rect(400, 350, 30, 30),
+    rect(500, 360, 30, 30),
+    rect(600, 380, 30, 30),
+    rect(700, 305, 30, 30),
+    rect(800, 330, 30, 30),
+
+    rect(300, 300, 30, 30),
+    rect(400, 230, 30, 30),
+    rect(500, 250, 30, 30),
+    rect(600, 205, 30, 30),
+    rect(700, 280, 30, 30),
+    rect(800, 260, 30, 30),
 ]
 
 // Returns true if a and b overlap
@@ -87,15 +170,15 @@ function draw() {
   var c = document.getElementById('screen').getContext('2d')
 
   // Draw background
-  c.fillStyle = '#EEE'
+  c.fillStyle = '#ecf0f1'
   c.fillRect(0, 0, c.canvas.width, c.canvas.height)
 
   // Draw player
-  c.fillStyle = '#D00'
+  c.fillStyle = '#e74c3c'
   c.fillRect(player.x, player.y, player.w, player.h)
 
   // Draw levels
-  c.fillStyle = '#BBB'
+  c.fillStyle = '#7f8c8d'
   for (var i = 0; i < rects.length; i++) {
     var r = rects[i]
     c.fillRect(r.x, r.y, r.w, r.h)
@@ -107,5 +190,5 @@ window.onload = function() {
   setInterval(function() {
     update()
     draw()
-  }, 1000 / 120)
+  }, 1000 / 80)
 }
