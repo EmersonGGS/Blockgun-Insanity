@@ -184,10 +184,6 @@ function update() {
   }
 }
 
-function randomColor () {
-  return '#' + Math.floor(Math.random()*16777215).toString(16);
-}
-
 // Renders a frame
 function draw(array) {
   var c = document.getElementById('screen').getContext('2d')
@@ -204,13 +200,13 @@ function draw(array) {
 
   // Draw each player connected the server
   for(var i = 0; i < array.length; i++) {
-    if ( i == userID ) {
+    if ( i == userID || i != 0 ) {
       // Do not create player object for clients canvas
       //- created above
     } 
     else {
       // Draw all other players
-      c.fillStyle = randomColor();
+      c.fillStyle = array[i].colour;
       c.fillRect(array[i].x, array[i].y, 25, 25);
     }
   }

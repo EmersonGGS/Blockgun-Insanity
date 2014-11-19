@@ -47,7 +47,6 @@ io.on('connection', function(socket){
   io.emit('connected', currentPlayerID);
 
   socket.on('updatePlayer', function(clientPlayer, clientID){
-    console.log(clientPlayer);
     for(var i = 0; i < players.length; i++) {
       if ( clientID = players[i].currentPlayerID ) {
           players[i].x = clientPlayer.x;
@@ -57,16 +56,9 @@ io.on('connection', function(socket){
     }
   })
 
-  //change next players ID
-  currentPlayerID = currentPlayerID + 1;
+  socket.on('disconnect', function(id) {
 
-  //changes the next players ID to a new one
-  playerObject.currentPlayerID = currentPlayerID;
-});
-
-io.on('disconnect', function(id) {
     console.log('Got disconnect! ');
-
     //remove player that disconnected
     for(var i = 0; i < players.length; i++) {
       if(id == players[i].currentPlayerID){
@@ -76,6 +68,14 @@ io.on('disconnect', function(id) {
     }
   });
 
+  //change next players ID
+  currentPlayerID = currentPlayerID + 1;
+
+  //changes the next players ID to a new one
+  playerObject.currentPlayerID = currentPlayerID;
+});
+
+  
 //////////////////////////////////
 // Start Server
 //////////////////////////////////
