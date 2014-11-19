@@ -1,0 +1,31 @@
+{
+  "name": "socket-boilerplate",
+  "description": "Socket Boilerplate Project",
+  "version": "0.0.0",
+  "homepage": "http://darcyclarke.me",
+  "author": "Darcy Clarke",
+  "main": "server.js",
+  "dependencies": {
+    "express": "*",
+    "socket.io": "*"
+  },
+  "devDependencies": {
+    "underscore": "*",
+    "jade": "*",
+    "gulp": "*",
+    "gulp-if": "*",
+    "gulp-debug": "*",
+    "gulp-util": "*",
+    "gulp-load-plugins": "*",
+    "gulp-sass": "*",
+    "gulp-uglify": "*",
+    "gulp-imagemin": "*",
+    "gulp-livereload": "*",
+    "gulp-concat": "*",
+    "gulp-jade": "*",
+    "gulp-rename": "*"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.0"
+  }
+}

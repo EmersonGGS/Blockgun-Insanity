@@ -1,4 +1,15 @@
+//Author: Emerson Stewart
+//Date: November 10th, 2014
 
+///////////////////
+//Init Variables//
+/////////////////
+var notConnected = true;
+var playersArray = [];
+var userID;
+
+// Create New Socket Connection using Socket.io
+var socket = io();
 
 // Create a rectangle with an (x, y) coordinate, a width, and a height
 function rect(x, y, w, h) {
@@ -137,21 +148,29 @@ function move(p, vx, vy) {
   p.y += vy
 }
 
+socket.on('connected',function(id){
+  if(notConnected){
+    userID = id;
+    notConnected = false;      
+  }
+  console.log(userID);
+});
+
 // Record which key codes are currently pressed
 var keys = {}
 document.onkeydown = function(e) { keys[e.which] = true }
 document.onkeyup = function(e) { keys[e.which] = false }
 
 // Player is a rectangle with extra properties
-var player = rect(20, 20, 25, 25)
-player.velocity = { x: 0, y: 0 }
-player.onFloor = false
+var player = rect(20, 20, 25, 25);
+player.velocity = { x: 0, y: 0 };
+player.onFloor = false;
 
 // Updates the state of the game for the next frame
 function update() {
   // Update the velocity
-  player.velocity.x = 3 * (!!keys[39] - !!keys[37]) // right - left
-  player.velocity.y += 1 // Acceleration due to gravity
+  player.velocity.x = 8 * (!!keys[39] - !!keys[37]) // right - left
+  player.velocity.y += 1.3 // Acceleration due to gravity
 
   // Move the player and detect collisions
   var expectedY = player.y + player.velocity.y
@@ -161,21 +180,40 @@ function update() {
 
   // Only jump when we're on the floor
   if (player.onFloor && keys[38]) {
-    player.velocity.y = -13
+    player.velocity.y = -15
   }
 }
 
+function randomColor () {
+  return '#' + Math.floor(Math.random()*16777215).toString(16);
+}
+
 // Renders a frame
-function draw() {
+function draw(array) {
   var c = document.getElementById('screen').getContext('2d')
+
+  socket.emit('updatePlayer', player, userID);
 
   // Draw background
   c.fillStyle = '#ecf0f1'
   c.fillRect(0, 0, c.canvas.width, c.canvas.height)
 
-  // Draw player
-  c.fillStyle = '#e74c3c'
-  c.fillRect(player.x, player.y, player.w, player.h)
+  // Draw current player
+  c.fillStyle = '#e74c3c';
+  c.fillRect(player.x, player.y, player.w, player.h);
+
+  // Draw each player connected the server
+  for(var i = 0; i < array.length; i++) {
+    if ( i == userID ) {
+      // Do not create player object for clients canvas
+      //- created above
+    } 
+    else {
+      // Draw all other players
+      c.fillStyle = randomColor();
+      c.fillRect(array[i].x, array[i].y, 25, 25);
+    }
+  }
 
   // Draw levels
   c.fillStyle = '#7f8c8d'
@@ -185,10 +223,15 @@ function draw() {
   }
 }
 
+socket.on('renderPlayers', function(array){
+  playersArray = array;
+});
+
 // Set up the game loop (Update and Draw loop)
 window.onload = function() {
   setInterval(function() {
-    update()
-    draw()
-  }, 1000 / 80)
+    update();
+    
+    draw(playersArray);
+  }, 1000 / 30)
 }
