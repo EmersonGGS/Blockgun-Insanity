@@ -6,6 +6,7 @@
 /////////////////
 var notConnected = true;
 var playersArray = [];
+var bullets = [];
 var userID;
 
 // Create New Socket Connection using Socket.io
@@ -118,14 +119,26 @@ var rects = [
 ]
 
 // Returns true if a and b overlap
-function overlapTest(a, b) {
+function overlapTest (a, b) {
   return a.x < b.x + b.w && a.x + a.w > b.x &&
          a.y < b.y + b.h && a.y + a.h > b.y
 }
 
+function fire () {
+
+  //Test
+  console.log("Fired");
+
+  //create bullet
+  var bullet = rect(20, 20, 5, 5);
+  bullet.velocity = { x: 0, y: 0 };
+
+  bullets.push(bullet);
+}
+
 // p represents the player obeject, and vx & vy are the x and y vertices
 // checks to see if a collision will occur
-function move(p, vx, vy) {
+function move (p, vx, vy) {
   
   // Move rectangle along x axis
   for (var i = 0; i < rects.length; i++) {
@@ -185,7 +198,7 @@ function update() {
 }
 
 // Renders a frame
-function draw(array) {
+function draw(array, bullets) {
   var c = document.getElementById('screen').getContext('2d')
 
   socket.emit('updatePlayer', player, userID);
@@ -206,9 +219,15 @@ function draw(array) {
     } 
     else {
       // Draw all other players
-      c.fillStyle = array[i].colour;
+      c.fillStyle = '#e74c3c';
       c.fillRect(array[i].x, array[i].y, 25, 25);
     }
+  }
+
+  //Draw Bullets
+  for(var i = 0; i < bullets.length; i++) {
+    c.fillStyle = '#e74c3c';
+    c.fillRect(bullets[i].x, array[i].y, 25, 25);
   }
 
   // Draw levels
@@ -227,7 +246,6 @@ socket.on('renderPlayers', function(array){
 window.onload = function() {
   setInterval(function() {
     update();
-    
-    draw(playersArray);
+    draw(playersArray, bullets);
   }, 1000 / 30)
 }
