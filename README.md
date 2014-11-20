@@ -6,11 +6,11 @@ Blockgun-Insanity
 Blockgun Insanity is a multiplayer arena shooter created in canvas.
 
 <h2>To Build Files</h2>
-
-- Navigate to the games directory
-- run gulp in your console/terminal
-- use outputted files in the "public" folder
-
+<ul>
+  <li>Navigate to the games directory</li>
+  <li>Run gulp in your console/terminal</li>
+  <li>Use outputted files in the "public" folder</li>
+</ul>
 <h2>Run the server</h2>
 <ul>
   <li>Navigate to the games directory</li>
@@ -18,7 +18,7 @@ Blockgun Insanity is a multiplayer arena shooter created in canvas.
   <li>your console will give you a port where the server has started</li>
   <li>type localhost:3000 (or if your terminal gave you a different port, enter that)</li>
   <li>Play</li>
-<ul>
+</ul>
 
 <h2>Built in Jade, Sass, Node.js, & Gulp</h2>
 <ul>
