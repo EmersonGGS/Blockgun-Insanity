@@ -6,6 +6,7 @@
 /////////////////
 var notConnected = true;
 var playersArray = [];
+var bullets = [];
 var userID;
 
 // Create New Socket Connection using Socket.io
@@ -118,14 +119,56 @@ var rects = [
 ]
 
 // Returns true if a and b overlap
-function overlapTest(a, b) {
+function overlapTest (a, b) {
   return a.x < b.x + b.w && a.x + a.w > b.x &&
          a.y < b.y + b.h && a.y + a.h > b.y
 }
 
-// p represents the player obeject, and vx & vy are the x and y vertices
+function fire (e) {
+  //init variables for mouse coords
+  var mouseX, mouseY;
+
+  //set coords in relation to canvas
+  if(e.offsetX) {
+      mouseX = e.offsetX;
+      mouseY = e.offsetY;
+  }
+  else if(e.layerX) {
+      mouseX = e.layerX;
+      mouseY = e.layerY;
+  }
+
+  //Test console
+  // console.log("Fired");
+  // console.log("mouse x: " + mouseX + " mouse y: " + mouseY + "player x: " + player.x);
+
+  //create bullet
+  var bullet = rect(player.x , player.y , 5, 5);
+  bullet.x = bullet.x + 8;
+  bullet.y = bullet.y + 8;
+  
+
+  //Set bullets direction and velocity
+  if (mouseX >= bullet.x){
+    console.log("should fire right");
+    bullet.velocity = { x: 40, y: 0 };
+    move(bullet, bullet.velocity.x, bullet.velocity.y);
+  } 
+  else if (mouseX < bullet.x)  {
+    console.log("shoulf fire left");
+    bullet.velocity = { x: -40, y: 0 };
+    move(bullet, bullet.velocity.x, bullet.velocity.y);
+  }
+  else{ //error handle to prevent crash
+    console.log("handle if mouseX and bullet.x are the same");
+  }
+
+  bullets.push(bullet);
+}
+
+// p represents the player obeject (or bullet), and vx & vy are the x and y vertices
 // checks to see if a collision will occur
-function move(p, vx, vy) {
+function move (p, vx, vy) {
   
   // Move rectangle along x axis
   for (var i = 0; i < rects.length; i++) {
@@ -182,10 +225,15 @@ function update() {
   if (player.onFloor && keys[38]) {
     player.velocity.y = -15
   }
+
+  //Update bullets movement
+  for (var i = 0; i < bullets.length; i++) {
+    move(bullets[i], bullets[i].velocity.x, bullets[i].velocity.y);
+  };
 }
 
 // Renders a frame
-function draw(array) {
+function draw(array, bullets) {
   var c = document.getElementById('screen').getContext('2d')
 
   socket.emit('updatePlayer', player, userID);
@@ -206,9 +254,15 @@ function draw(array) {
     } 
     else {
       // Draw all other players
-      c.fillStyle = array[i].colour;
+      c.fillStyle = '#e74c3c';
       c.fillRect(array[i].x, array[i].y, 25, 25);
     }
+  }
+
+  //Draw Bullets
+  for(var i = 0; i < bullets.length; i++) {
+    c.fillStyle = '#34495e';
+    c.fillRect(bullets[i].x, bullets[i].y, 9, 9);
   }
 
   // Draw levels
@@ -227,7 +281,6 @@ socket.on('renderPlayers', function(array){
 window.onload = function() {
   setInterval(function() {
     update();
-    
-    draw(playersArray);
+    draw(playersArray, bullets);
   }, 1000 / 30)
 }
