@@ -149,18 +149,16 @@ function fire (e) {
   
 
   //Set bullets direction and velocity
-  if (mouseX >= bullet.x){
-    console.log("should fire right");
-    bullet.velocity = { x: 40, y: 0 };
+  if (mouseX >= bullet.x) { // fire bullet to left of player
+    bullet.velocity = { x: 30, y: 0 };
     move(bullet, bullet.velocity.x, bullet.velocity.y);
   } 
-  else if (mouseX < bullet.x)  {
-    console.log("shoulf fire left");
-    bullet.velocity = { x: -40, y: 0 };
+  else if (mouseX < bullet.x) { //fire bullet to left of player
+    bullet.velocity = { x: -30, y: 0 };
     move(bullet, bullet.velocity.x, bullet.velocity.y);
   }
-  else{ //error handle to prevent crash
-    console.log("handle if mouseX and bullet.x are the same");
+  else { 
+    //error handle to prevent crash
   }
 
   bullets.push(bullet);
@@ -229,14 +227,19 @@ function update() {
   //Update bullets movement
   for (var i = 0; i < bullets.length; i++) {
     move(bullets[i], bullets[i].velocity.x, bullets[i].velocity.y);
+    if (bullets[i].x > 1099 || bullets[i].x < 1) {
+      console.log("remove bullet");
+      var bulletIndex = bullets.indexOf(i);
+      bullets.shift();
+    };
   };
 }
 
 // Renders a frame
-function draw(array, bullets) {
+function draw(array, clientBullets) {
   var c = document.getElementById('screen').getContext('2d')
 
-  socket.emit('updatePlayer', player, userID);
+  socket.emit('updatePlayer', player, userID, clientBullets);
 
   // Draw background
   c.fillStyle = '#ecf0f1'
@@ -260,9 +263,9 @@ function draw(array, bullets) {
   }
 
   //Draw Bullets
-  for(var i = 0; i < bullets.length; i++) {
+  for(var i = 0; i < clientBullets.length; i++) {
     c.fillStyle = '#34495e';
-    c.fillRect(bullets[i].x, bullets[i].y, 9, 9);
+    c.fillRect(clientBullets[i].x, clientBullets[i].y, 9, 9);
   }
 
   // Draw levels
@@ -273,8 +276,11 @@ function draw(array, bullets) {
   }
 }
 
-socket.on('renderPlayers', function(array){
+
+
+socket.on('renderPlayers', function(array, allBullets){
   playersArray = array;
+  bullets = allBullets;
 });
 
 // Set up the game loop (Update and Draw loop)

@@ -15,6 +15,7 @@ var playerObject = {x: 20, y: 20, currentPlayerID: 0};
 playerObject.velocity = { x: 0, y: 0 };
 playerObject.onFloor = false;
 
+
 //////////////////////////////////
 // Route our Assets
 //////////////////////////////////
@@ -46,13 +47,22 @@ io.on('connection', function(socket){
   //emit to the client their id
   io.emit('connected', currentPlayerID);
 
-  socket.on('updatePlayer', function(clientPlayer, clientID){
+  socket.on('updatePlayer', function(clientPlayer, clientID, clientBullets){
+    //initialize/clear array of bullets
+    var allTheBullets = [];
+
+    //run through all bullets and add them to the array
+    for (var i = 0; i < clientBullets.length ;i++) {
+      allTheBullets.push(clientBullets[i]);
+    }
+ 
+
     for(var i = 0; i < players.length; i++) {
       if ( clientID = players[i].currentPlayerID ) {
           players[i].x = clientPlayer.x;
-          players[i].y = clientPlayer.y; 
+          players[i].y = clientPlayer.y;
       }
-      io.emit('renderPlayers', players);
+      io.emit('renderPlayers', players, allTheBullets);
     }
   })
 
