@@ -124,19 +124,46 @@ function overlapTest (a, b) {
          a.y < b.y + b.h && a.y + a.h > b.y
 }
 
-function fire () {
+function fire (e) {
+  //init variables for mouse coords
+  var mouseX, mouseY;
 
-  //Test
-  console.log("Fired");
+  //set coords in relation to canvas
+  if(e.offsetX) {
+      mouseX = e.offsetX;
+      mouseY = e.offsetY;
+  }
+  else if(e.layerX) {
+      mouseX = e.layerX;
+      mouseY = e.layerY;
+  }
+
+  //Test console
+  // console.log("Fired");
+  // console.log("mouse x: " + mouseX + " mouse y: " + mouseY + "player x: " + player.x);
 
   //create bullet
-  var bullet = rect(player.x, player.y, 5, 5);
-  bullet.velocity = { x: 5, y: 0 };
+  var bullet = rect(player.x , player.y , 5, 5);
+  bullet.x = bullet.x + 8;
+  bullet.y = bullet.y + 8;
+  
+
+  //Set bullets direction and velocity
+  if (mouseX > bullet.x){
+    console.log("should fire right");
+    bullet.velocity = { x: 40, y: 0 };
+    move(bullet, bullet.velocity.x, bullet.velocity.y);
+  } 
+  else if (mouseX < bullet.x)  {
+    console.log("shoulf fire left");
+    bullet.velocity = { x: -40, y: 0 };
+    move(bullet, bullet.velocity.x, bullet.velocity.y);
+  }
 
   bullets.push(bullet);
 }
 
-// p represents the player obeject, and vx & vy are the x and y vertices
+// p represents the player obeject (or bullet), and vx & vy are the x and y vertices
 // checks to see if a collision will occur
 function move (p, vx, vy) {
   
@@ -195,6 +222,11 @@ function update() {
   if (player.onFloor && keys[38]) {
     player.velocity.y = -15
   }
+
+  //Update bullets movement
+  for (var i = 0; i < bullets.length; i++) {
+    move(bullets[i], bullets[i].velocity.x, bullets[i].velocity.y);
+  };
 }
 
 // Renders a frame
