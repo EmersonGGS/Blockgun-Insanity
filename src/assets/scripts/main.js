@@ -130,8 +130,8 @@ function fire () {
   console.log("Fired");
 
   //create bullet
-  var bullet = rect(20, 20, 5, 5);
-  bullet.velocity = { x: 0, y: 0 };
+  var bullet = rect(player.x, player.y, 5, 5);
+  bullet.velocity = { x: 5, y: 0 };
 
   bullets.push(bullet);
 }
@@ -226,8 +226,8 @@ function draw(array, bullets) {
 
   //Draw Bullets
   for(var i = 0; i < bullets.length; i++) {
-    c.fillStyle = '#e74c3c';
-    c.fillRect(bullets[i].x, array[i].y, 25, 25);
+    c.fillStyle = '#34495e';
+    c.fillRect(bullets[i].x, bullets[i].y, 9, 9);
   }
 
   // Draw levels
