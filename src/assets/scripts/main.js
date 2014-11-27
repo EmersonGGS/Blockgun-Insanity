@@ -13,7 +13,7 @@ var userID;
 var socket = io();
 
 // Create a rectangle with an (x, y) coordinate, a width, and a height
-function rect(x, y, w, h) {
+function rect (x, y, w, h) {
   return { x: x, y: y, w: w, h: h }
 }
 
@@ -137,10 +137,6 @@ function fire (e) {
       mouseX = e.layerX;
       mouseY = e.layerY;
   }
-
-  //Test console
-  // console.log("Fired");
-  // console.log("mouse x: " + mouseX + " mouse y: " + mouseY + "player x: " + player.x);
 
   //create bullet
   var bullet = rect(player.x , player.y , 5, 5);

@@ -1,7 +1,7 @@
 
-//////////////////////////////////
-// Require Native Node.js Libraries
-//////////////////////////////////
+///////////////////////
+// Require Libraries//
+/////////////////////
 
 var express = require('express');
 var app = express();
@@ -16,23 +16,23 @@ playerObject.velocity = { x: 0, y: 0 };
 playerObject.onFloor = false;
 
 
-//////////////////////////////////
-// Route our Assets
-//////////////////////////////////
+//////////////////////
+// Route our Assets//
+////////////////////
 
 app.use('/assets/', express.static(__dirname + '/public/assets/'));
 
-//////////////////////////////////
-// Route our Home Page
-//////////////////////////////////
+/////////////////////////
+// Route our Home Page//
+///////////////////////
 
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/public/index.html');
 });
 
-//////////////////////////////////
-// Handle Socket Connection
-//////////////////////////////////
+//////////////////////////////
+// Handle Socket Connection//
+////////////////////////////
 
 io.on('connection', function(socket){
 
@@ -55,7 +55,22 @@ io.on('connection', function(socket){
     for (var i = 0; i < clientBullets.length ;i++) {
       allTheBullets.push(clientBullets[i]);
     }
- 
+
+    // //check if player was shot
+    // for (var i = 0; i < players.length; i++) {
+    //   //get each player
+    //   testPlayerX = players[i].x;
+    //   textPlayerY = players[i].y;
+
+    //   //run through bullets to see if they were hit
+    //   for (var i = 0; i < allTheBullets.length; i++) {
+    //     console.log("Running through bullets " + i);
+    //     if (allTheBullets[i].x < testPlayerX.x + 25  && allTheBullets[i].x + allTheBullets[i].width  > testPlayerX &&
+    //         allTheBullets[i].y < textPlayerY + 25 && allTheBullets[i].y + 8 > textPlayerY) {
+    //        consol.log("player hit");
+    //     }
+    //   }
+    // }
 
     for(var i = 0; i < players.length; i++) {
       if ( clientID = players[i].currentPlayerID ) {
@@ -86,9 +101,9 @@ io.on('connection', function(socket){
 });
 
   
-//////////////////////////////////
-// Start Server
-//////////////////////////////////
+//////////////////
+// Start Server//
+////////////////
 
 http.listen(process.env.PORT || 3000, process.env.IP || "127.0.0.1", function(){
   var addr = http.address();
